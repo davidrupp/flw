@@ -1,8 +1,8 @@
 (ns flw.core
-  (:use incanter.stats)
+  (:use [incanter.stats :only (hamming-distance)])
   (:require clojure.java.io))
 
-(def rdr (clojure.java.io/reader "/Users/david/Downloads/four_letter_words.txt"))
+(def rdr (clojure.java.io/reader "four_letter_words.txt"))
 (def words (line-seq rdr))
 (def graph (atom {}))
 
@@ -14,6 +14,9 @@
       (swap! graph assoc other neighbors-other))))
 
 (defn add-to-graph [word]
+  (println (str "Adding " word))
   (swap! graph assoc word #{})
   (dorun (map #(add-neighbor word %1) (keys @graph)))
   true)
+
+(dorun (map add-to-graph words))
